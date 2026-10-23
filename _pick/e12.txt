@@ -1,0 +1,43 @@
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+        </div>
+        <div class="container-rim"></div>
+        <div class="container-body">
+          <div class="container-label">食运签</div>
+        </div>
+        <div class="rope-knot">
+          <div class="rope-band"></div>
+          <div class="rope-knot-center"></div>
+          <div class="rope-tassel"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="draw-btn" onclick="startDraw()">🎋 求一支食签</button>
+  </div>
+
+  <div class="content-scroll-area">
+    <!-- ===== v0.5 附近可下单：美团 / 闪购 ===== -->
+    <section class="platform-pane" id="platformPane" aria-label="附近可下单">
+      <div class="pane-head">
+        <span class="pane-title">🥢 附近可下单</span>
+        <span class="pane-sub">美团 · 闪购 实时比价</span>
+        <button class="icon-btn" id="paneLocate" type="button" title="使用精确定位" aria-label="使用精确定位">◎</button>
+        <button class="icon-btn" id="paneRefresh" type="button" title="刷新" aria-label="刷新">↻</button>
+      </div>
+      <div class="pane-status" id="paneStatus"></div>
+      <div class="pane-tabs">
+        <button type="button" data-pane-tab="products" class="active">团购 / 商品</button>
+        <button type="button" data-pane-tab="shops">门店</button>
+      </div>
+      <div class="pane-list" id="paneList"></div>
+      <p class="pane-foot">价格与库存以平台实时页面为准；下单与支付在美团 App / 淘宝闪购完成，本站不代收款项。</p>
+    </section>
+
+    <div class="llm-section">
+      <div class="section-title-row">
+        <div class="section-title">✨ 问问食神</div>
+        <span class="agent-badge" id="agentBadge">glm-4.7-flash</span>
+      </div>
