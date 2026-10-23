@@ -1,8 +1,7 @@
 name: Assemble index.html
 
 # index.html 很大（65KB），而推送通道单次上限约 8KB，所以拆成 8 块存在 _tmp/。
-# 这个 workflow 把它们按顺序用换行拼回去，覆盖 personal-site/app/index.html，
-# 校验字节数后自动删除 _tmp/ 并提交。
+# 这个 workflow 把它们拼回去，覆盖 personal-site/app/index.html，然后清掉 _tmp。
 on:
   push:
     paths:
@@ -17,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 拼装并校验
         run: |
@@ -31,31 +32,34 @@ print('找到分块:', blocks)
 if len(blocks) != 8:
     sys.exit(f'期望 8 块，实际 {len(blocks)}')
 
-parts = [open(p, encoding='utf-8').read() for p in blocks]
-for p, t in zip(blocks, parts):
+parts = []
+for p in blocks:
+    with open(p, encoding='utf-8') as f:
+        t = f.read()
+    parts.append(t)
     print(f'  {p}: {len(t.encode())} B')
 
-# 末块自带文件结尾换行，块之间用单个换行连接
+# 块之间用换行连接；末块自带末尾换行，不再额外补
 out = '\n'.join(parts)
 data = out.encode('utf-8')
 print('拼装后字节数:', len(data))
 
-# 行数或字节数偏小就说明有块缺失/损坏，拒绝写入
-if len(data) < 60000:
-    sys.exit(f'太小了：{len(data)}，拒绝写入')
+if len(data) != 65277:
+    sys.exit(f'字节数不对：{len(data)}，期望 65277，拒绝写入')
 for needle in ('const API_BASE', 'const USE_MOCK', '</html>'):
     if needle not in out:
         sys.exit(f'缺少关键标识：{needle}')
 
-open('personal-site/app/index.html', 'w', encoding='utf-8', newline='').write(out)
-print('已写入 personal-site/app/index.html')
+with open('personal-site/app/index.html', 'w', encoding='utf-8', newline='') as f:
+    f.write(out)
+print('已写入')
 PY
 
-      - name: 提交并清理分块
+      - name: 提交并清理
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -rf _tmp
           git add -A personal-site/app/index.html _tmp
-          git commit -m "feat(app): 拼装出完整 index.html，清理 _tmp 分块" || echo "无变更"
-          git push
+          git diff --cached --quiet || git commit -m "feat(app): 拼装出完整 index.html（65277 字节），清理 _tmp"
+          git push origin HEAD:main
