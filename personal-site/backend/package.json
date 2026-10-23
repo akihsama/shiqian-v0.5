@@ -1,18 +1,17 @@
 {
-  "name": "shiqian-agent-backend",
+  "name": "shiqian-backend",
   "version": "0.5.0",
   "private": true,
+  "description": "今日食签 v0.5 后端：DeepSeek(flash + search) + 美团 + 淘宝闪购 聚合",
   "type": "module",
-  "description": "今日食签 v0.5 后端：Cloudflare Worker，聚合 AI 出签与美团/闪购平台商品",
+  "main": "worker.js",
   "scripts": {
-    "test": "node --test test/unit.test.mjs",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.mjs",
+    "check": "wrangler deploy --dry-run --outdir=.wrangler/dist"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
-  },
-  "engines": {
-    "node": ">=20"
   }
 }
