@@ -1,0 +1,58 @@
+      document.getElementById('glowEffect').classList.remove('active');
+      document.getElementById('closeHint').classList.remove('show');
+      isStickOpened = false;
+    }, 500);
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.isComposing) {
+      event.preventDefault();
+      sendLLM();
+    }
+  }
+
+  function setAgentLoading(isLoading) {
+    const input = document.getElementById('llmInput');
+    const sendButton = document.getElementById('llmSendBtn');
+    const thinking = document.getElementById('llmThinking');
+    const result = document.getElementById('llmResult');
+
+    input.disabled = isLoading;
+    sendButton.disabled = isLoading;
+    sendButton.textContent = isLoading ? '思考中' : '发送';
+    thinking.classList.toggle('show', isLoading);
+
+    if (isLoading) {
+      result.classList.remove('show');
+    } else {
+      input.focus({ preventScroll: true });
+    }
+  }
+
+  function extractAgentReply(payload) {
+    if (typeof payload === 'string') return payload.trim();
+
+    const candidates = [
+      payload?.reply,
+      payload?.content,
+      typeof payload?.message === 'string' ? payload.message : payload?.message?.content,
+      payload?.choices?.[0]?.message?.content
+    ];
+
+    const reply = candidates.find(value => typeof value === 'string' && value.trim());
+    return reply ? reply.trim() : '';
+  }
+
+  function normalizeReply(reply) {
+    return String(reply)
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/^#{1,6}\s*/gm, '')
+      .trim();
+  }
+
+  // v0.5：后端返回的是结构化推荐（recommend），前端把签库切成
+  // 「平台有货」和「纯签库」两池，优先在真实商品里出签。
+  function resolveFood(payload, reply) {
+    const explicitName = payload?.foodName || payload?.recommend?.foodName || payload?.food?.name;
+    const bracketName = reply && reply.match(/【([^】]{1,24})】/)?.[1];
+    const candidate = typeof explicitName === 'string' ? explicitName.trim() : bracketName;
