@@ -1,0 +1,345 @@
+/* =====================================================================
+   今日食签 v0.5 · 平台面板样式
+   ---------------------------------------------------------------------
+   说明：沿用 index.html 里既有的 CSS 变量（--container-bg / --text-primary
+   / --gold 等），所以深浅色主题自动跟随，不需要再写一套 dark 覆盖。
+   ===================================================================== */
+
+/* ---------- 面板容器 ---------- */
+.platform-pane {
+  margin-top: 24px;
+  padding: 18px 16px 16px;
+  background: var(--container-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid var(--container-border);
+  transition: background .3s, border-color .3s;
+}
+
+.pane-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.pane-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.pane-sub {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pane-head .icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--container-border);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s, background .2s;
+}
+.pane-head .icon-btn:hover { transform: scale(1.08); background: var(--item-bg); }
+.pane-head .icon-btn:disabled { opacity: .5; cursor: wait; }
+
+/* ---------- 状态条 ---------- */
+.pane-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  min-height: 22px;
+}
+
+.chip {
+  font: inherit;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--container-border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.chip:hover { background: var(--item-bg); }
+
+.src-badge {
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  line-height: 1.4;
+  border: 1px solid var(--container-border);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.src-badge[data-state='ok'] { color: var(--text-secondary); }
+.src-badge[data-state='error'] { color: var(--red-accent); border-color: currentColor; }
+.src-badge[data-state='not_configured'] { color: var(--text-muted); border-style: dashed; }
+
+/* ---------- Tab ---------- */
+.pane-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.pane-tabs button {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .2s, background .2s;
+}
+.pane-tabs button.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end));
+  box-shadow: 0 2px 10px var(--glow-color);
+}
+
+/* ---------- 列表 ---------- */
+.pane-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.p-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--item-bg);
+  border: 1px solid transparent;
+  animation: fadeInUp .4s ease both;
+}
+.p-card[data-src='meituan'] { border-left: 3px solid #FFD000; }
+.p-card[data-src='shangou'] { border-left: 3px solid #FF6A00; }
+
+.p-cover {
+  width: 74px;
+  height: 74px;
+  flex: 0 0 74px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--container-bg);
+}
+.p-cover-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.p-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+
+.p-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.p-meta, .p-addr {
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.p-price { font-size: 15px; font-weight: 700; color: var(--red-accent); }
+.p-origin { margin-left: 5px; font-size: 11px; color: var(--text-muted); text-decoration: line-through; }
+
+.p-go {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.p-go:hover { text-decoration: underline; }
+.p-go-disabled { color: var(--text-muted); }
+
+.p-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.src-tag {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  color: #3b2b00;
+  background: #FFD000;
+}
+.src-tag[data-src='shangou'] { background: #FF6A00; color: #fff; }
+.src-tag[data-src='local'] { background: var(--text-secondary); color: #fff; }
+
+/* 骨架屏 */
+.p-skel {
+  height: 94px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--item-bg) 25%, var(--container-bg) 50%, var(--item-bg) 75%);
+  background-size: 200% 100%;
+  animation: skelShine 1.3s linear infinite;
+}
+@keyframes skelShine {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* 空状态 */
+.pane-empty {
+  padding: 22px 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.pane-empty-hint { font-size: 11px; opacity: .85; margin-top: 6px; }
+
+.pane-more {
+  font: inherit;
+  font-size: 12px;
+  padding: 9px;
+  border-radius: 10px;
+  border: 1px dashed var(--container-border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.pane-more:hover { background: var(--item-bg); }
+
+/* 底部说明 */
+.pane-foot {
+  margin-top: 12px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  opacity: .9;
+}
+
+/* ---------- 城市选择浮层 ---------- */
+.city-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 4999;
+  background: rgba(0, 0, 0, .38);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: maskIn .2s ease both;
+}
+@keyframes maskIn { from { opacity: 0; } to { opacity: 1; } }
+
+.city-picker {
+  position: fixed;
+  z-index: 5000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(340px, calc(100vw - 32px));
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 16px;
+  /* 用不透明底：浮层下面压着签筒，半透明 + backdrop-filter 会把签筒颜色透上来 */
+  background: #ffffff;
+  border: 1px solid var(--container-border);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, .22);
+  animation: cityIn .25s cubic-bezier(.34, 1.4, .64, 1) both;
+}
+html[data-theme="dark"] .city-picker {
+  background: #1e293b;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, .55);
+}
+/* 单独写动画，避免覆盖上面的 translate 定位 */
+@keyframes cityIn {
+  from { transform: translate(-50%, -46%) scale(.94); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+.city-picker-head { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+.city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.city-item {
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--container-border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.city-item:hover { background: var(--item-bg); color: var(--text-secondary); }
+
+/* ---------- 食签卡内的「去下单」 ---------- */
+.card-platform {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(229, 57, 53, .25);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card-platform-main {
+  font-size: 11px;
+  color: var(--card-text);
+  line-height: 1.5;
+}
+.card-platform-link {
+  display: inline-block;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--red-accent);
+  color: #fff;
+  text-decoration: none;
+  align-self: center;
+}
+.card-platform-link:hover { filter: brightness(1.08); }
+
+/* ---------- AI 回复里的来源 ---------- */
+.agent-sources {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--container-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.agent-sources a { color: var(--text-secondary); text-decoration: none; }
+.agent-sources a:hover { text-decoration: underline; }
+
+/* ---------- 小屏适配 ---------- */
+@media (max-width: 380px) {
+  .p-cover { width: 62px; height: 62px; flex-basis: 62px; }
+  .pane-sub { display: none; }
+  .city-grid { grid-template-columns: repeat(3, 1fr); }
+}
