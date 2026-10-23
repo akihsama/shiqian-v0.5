@@ -1,0 +1,45 @@
+# 今日食签 v0.5 后端（Cloudflare Worker）
+# =============================================================================
+# 只改这里，不要提交任何密钥。
+# 所有密钥都用 wrangler secret put 写进 Cloudflare，仓库里只有占位说明。
+# 完整步骤见同目录 README.md
+
+name = "shiqian-agent"
+main = "worker.js"
+compatibility_date = "2025-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ── 用量记账 / 限流用的 KV ──────────────────────────────────────────
+# 创建：wrangler kv namespace create USAGE
+# 把打印出来的 id 填到下面（binding 名保持 USAGE 不变）
+[[kv_namespaces]]
+binding = "USAGE"
+id = "bbe75bb900b24ce78112cd361dd61874"
+
+# ── 非密钥配置（可以直接写在仓库里）─────────────────────────────────
+[vars]
+# AI 提供商：zhipu（智谱 GLM，输入输出全免费）| deepseek（按 token 计费）
+AI_PROVIDER = "zhipu"
+MODEL = "glm-4.7-flash"
+DAILY_BUDGET_YUAN = "1"
+DAILY_MAX_CALLS = "300"
+DAILY_MAX_SEARCH = "150"
+MAX_OUTPUT_TOKENS = "320"
+# 站点域名白名单，逗号分隔。支持一条 https://*.pages.dev 通配，
+# 一次覆盖 Pages 项目域名（shiqian.pages.dev）和每次部署的哈希预览域名。
+ALLOWED_ORIGINS = "https://akihsama.github.io,https://*.pages.dev,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001"
+
+# ── 密钥（不要写在这个文件里）──────────────────────────────────
+# wrangler secret put ZHIPU_API_KEY           智谱开放平台 bigmodel.cn 申请，Flash 系列免费
+# wrangler secret put DEEPSEEK_API_KEY        （可选）DeepSeek key；仅当 AI_PROVIDER=deepseek
+#                                             或想启用联网搜索时才需要
+# wrangler secret put MEITUAN_TOKEN           美团团购搜索的用户授权 token
+# wrangler secret put MEITUAN_TRAVEL_TOKEN    （可选）美团开放平台个人开发者 token，走酒旅
+# wrangler secret put SHANGOU_APP_KEY         淘宝闪购开放平台 app_key
+# wrangler secret put SHANGOU_APP_SECRET      淘宝闪购开放平台 app_secret
+# wrangler secret put SHANGOU_TOKEN           淘宝闪购客户端授权 token
+# wrangler secret put SHANGOU_SHOP_ID         已绑定的门店 id（开放平台按门店查商品）
+#
+# 换模型只改 [vars] 的 AI_PROVIDER + MODEL，代码不用动：
+#   zhipu    → glm-4.7-flash / glm-4-flash（免费）
+#   deepseek → deepseek-flash / deepseek-v4-pro
