@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>今日食签 · 每日吃什么</title>
+<link rel="stylesheet" href="css/platform.css">
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+  --font-xingkai: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', sans-serif;
+
+    /* 亮色主题默认值 */
+    --bg-gradient-start: #E0F7FA;
+    --bg-gradient-mid: #B2EBF2;
+    --bg-gradient-end: #80DEEA;
+    
+    --text-primary: #1A237E;
+    --text-secondary: #00BCD4;
+    --text-muted: #90A4AE;
+    
+    --container-bg: rgba(255, 255, 255, 0.6);
+    --container-border: rgba(79, 195, 247, 0.2);
+    --item-bg: rgba(224, 247, 250, 0.8);
+    
+    --wood-light: #8D6E63;
+    --wood-mid: #6D4C41;
+    --wood-dark: #5D4037;
+    --wood-darker: #4E342E;
+    
+    --gold: #FFD54F;
+    --red-accent: #E53935;
+    --btn-gradient-start: #4FC3F7;
+    --btn-gradient-end: #00BCD4;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --glow-color: rgba(79, 195, 247, 0.4);
+    
+    --cloud-opacity: 0.3;
+    --card-bg-start: #FFF8E1;
+    --card-bg-end: #FFE082;
+    --card-text: #5D4037;
+  }
+
+  /* 暗色主题覆盖 */
+  html[data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-mid: #1e293b;
+      --bg-gradient-end: #334155;
+      
+      --text-primary: #e2e8f0;
+      --text-secondary: #38bdf8;
+      --text-muted: #94a3b8;
+      
+      --container-bg: rgba(30, 41, 59, 0.7);
+      --container-border: rgba(56, 189, 248, 0.2);
+      --item-bg: rgba(51, 65, 85, 0.6);
+      
+      --wood-light: #5D4037;
+      --wood-mid: #4E342E;
+      --wood-dark: #3E2723;
+      --wood-darker: #281815;
+      
+      --gold: #fbbf24;
+      --red-accent: #f87171;
+      --btn-gradient-start: #0ea5e9;
+      --btn-gradient-end: #0284c7;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --glow-color: rgba(14, 165, 233, 0.5);
+      
+      --cloud-opacity: 0.1;
