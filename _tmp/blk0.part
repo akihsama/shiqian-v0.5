@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>今日食签 · 每日吃什么</title>
+<link rel="stylesheet" href="css/platform.css">
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+  --font-xingkai: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', sans-serif;
+
+    /* 亮色主题默认值 */
+    --bg-gradient-start: #E0F7FA;
+    --bg-gradient-mid: #B2EBF2;
+    --bg-gradient-end: #80DEEA;
+    
+    --text-primary: #1A237E;
+    --text-secondary: #00BCD4;
+    --text-muted: #90A4AE;
+    
+    --container-bg: rgba(255, 255, 255, 0.6);
+    --container-border: rgba(79, 195, 247, 0.2);
+    --item-bg: rgba(224, 247, 250, 0.8);
+    
+    --wood-light: #8D6E63;
+    --wood-mid: #6D4C41;
+    --wood-dark: #5D4037;
+    --wood-darker: #4E342E;
+    
+    --gold: #FFD54F;
+    --red-accent: #E53935;
+    --btn-gradient-start: #4FC3F7;
+    --btn-gradient-end: #00BCD4;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --glow-color: rgba(79, 195, 247, 0.4);
+    
+    --cloud-opacity: 0.3;
+    --card-bg-start: #FFF8E1;
+    --card-bg-end: #FFE082;
+    --card-text: #5D4037;
+  }
+
+  /* 暗色主题覆盖 */
+  html[data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-mid: #1e293b;
+      --bg-gradient-end: #334155;
+      
+      --text-primary: #e2e8f0;
+      --text-secondary: #38bdf8;
+      --text-muted: #94a3b8;
+      
+      --container-bg: rgba(30, 41, 59, 0.7);
+      --container-border: rgba(56, 189, 248, 0.2);
+      --item-bg: rgba(51, 65, 85, 0.6);
+      
+      --wood-light: #5D4037;
+      --wood-mid: #4E342E;
+      --wood-dark: #3E2723;
+      --wood-darker: #281815;
+      
+      --gold: #fbbf24;
+      --red-accent: #f87171;
+      --btn-gradient-start: #0ea5e9;
+      --btn-gradient-end: #0284c7;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --glow-color: rgba(14, 165, 233, 0.5);
+      
+      --cloud-opacity: 0.1;
+      --card-bg-start: #451a03;
+      --card-bg-end: #78350f;
+      --card-text: #fef3c7;
+  }
+
+  body {
+    font-family: var(--font-xingkai);
+    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 40%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    color: var(--text-primary);
+    transition: background 0.5s ease;
+  }
+
+  /* ===== 深浅色切换按钮 ===== */
+  /* wallpaper background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+   background-image: url("../assets/img/wallpaper.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px) brightness(0.85);
+    opacity: 0.6;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(0.5px);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 50;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--container-border);
+    background: var(--container-bg);
+    color: var(--text-primary);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .theme-toggle:hover { transform: scale(1.08); }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: var(--font-xingkai);
+  }
+
+  /* ===== 背景装饰 ===== */
+  .bg-decoration {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255, var(--cloud-opacity));
+    border-radius: 50%;
+    filter: blur(20px);
+  }
+  .cloud:nth-child(1) { width: 200px; height: 80px; top: 10%; left: -20px; animation: floatCloud 20s ease-in-out infinite; }
+  .cloud:nth-child(2) { width: 150px; height: 60px; top: 30%; right: -10px; animation: floatCloud 25s ease-in-out infinite reverse; }
+  .cloud:nth-child(3) { width: 180px; height: 70px; top: 60%; left: 10%; animation: floatCloud 22s ease-in-out infinite 3s; }
+  .cloud:nth-child(4) { width: 120px; height: 50px; top: 80%; right: 20%; animation: floatCloud 18s ease-in-out infinite 5s; }
+
+  @keyframes floatCloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(30px); }
+  }
+
+  /* 樱花花瓣 - 暗色下稍微调亮 */
+  .petal {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #F8BBD0 0%, #F48FB1 100%);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    animation: fallPetal linear infinite;
+  }
+  
+  html[data-theme="dark"] .petal {
+      background: radial-gradient(circle, #fbcfe8 0%, #f472b6 100%);
+      opacity: 0.8;
+      box-shadow: 0 0 5px rgba(244, 114, 182, 0.5);
+  }
+
+  @keyframes fallPetal {
+    0% { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(100vh) rotate(720deg) translateX(80px); opacity: 0; }
+  }
+
+  /* ===== 主容器 ===== */
+  .app-container {
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== 头部 ===== */
+  .header {
+    text-align: center;
+    padding: 30px 0 20px;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-family: var(--font-xingkai);
+    font-size: 36px;
+    color: var(--text-primary);
+    text-shadow: 0 2px 8px var(--glow-color);
+    margin-bottom: 8px;
+    letter-spacing: 4px;
+  }
+
+  .header-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+  }
+
+  .header-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-secondary), transparent);
+    margin: 16px auto;
+  }
+
+  /* ===== 签筒区域 ===== */
+  .lottery-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    flex-shrink: 0;
+  }
+
+  .container-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 24px;
+  }
+
+  .sign-container {
+    position: relative;
+    width: 120px;
+    height: 200px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    margin: 0 auto; 
+  }
+
+  .sign-container:hover {
+    transform: scale(1.02);
+  }
+
+  .container-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 180px;
+    background: linear-gradient(135deg, var(--wood-light) 0%, var(--wood-mid) 30%, var(--wood-dark) 60%, var(--wood-darker) 100%);
+    border-radius: 8px 8px 12px 12px;
+    box-shadow: 
+      inset 3px 0 8px rgba(255,255,255,0.1),
+      inset -3px 0 8px rgba(0,0,0,0.3),
+      0 8px 24px var(--shadow-color);
+    overflow: hidden;
+  }
+
+  .container-body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 8px,
+      rgba(0,0,0,0.05) 8px,
+      rgba(0,0,0,0.05) 9px
+    );
+  }
+
+  .container-rim {
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 128px;
+    height: 24px;
+    background: linear-gradient(180deg, var(--wood-light), var(--wood-mid), var(--wood-dark));
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    z-index: 5;
+  }
+
+  .container-rim::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+    height: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 0 0 4px 4px;
+  }
+
+  .rope-knot {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 30px;
+    z-index: 6;
+  }
+
+  .rope-band {
+    position: absolute;
+    top: 0;
