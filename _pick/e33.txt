@@ -1,0 +1,10 @@
+      document.addEventListener('click', function(){ menu.style.display = 'none'; });
+    }
+    document.querySelectorAll('.draw-btn, .llm-send-btn, .sign-container').forEach(function(el){
+      el.addEventListener('click', function(){ playClick(); }, { passive: true });
+    });
+    updateUI();
+  })();
+  </script>
+</body>
+</html>
