@@ -1,0 +1,24 @@
+name: Deploy personal-site to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "personal-site/**"
+      - ".github/workflows/deploy-personal-site.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy personal-site --project-name=shiqian
