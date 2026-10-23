@@ -1,0 +1,44 @@
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  }
+  initTheme();
+
+  function createPetals() {
+    const body = document.body;
+    for (let i = 0; i < 8; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.animationDuration = (8 + Math.random() * 6) + 's';
+      petal.style.animationDelay = Math.random() * 10 + 's';
+      petal.style.width = (6 + Math.random() * 8) + 'px';
+      petal.style.height = (6 + Math.random() * 8) + 'px';
+      body.appendChild(petal);
+    }
+  }
+
+  // ===== 抽签：24h 周期轮替 + 每次随机变换 =====
+  // 每支签都随机变化（同一时段不会锁死同一支），但整体以「一天 24 小时」
+  // 为一个周期做轮替：用当前时刻在一天中的位置作为轮替基准，随机窗口围绕
+  // 基准取材，保证一整天把菜系轮替一圈。
+  const DRAW_24H_PERIOD = true;   // 设为 false 则完全纯随机
+  function pickCyclicFood(now = new Date()) {
+    const foods = foodDatabase;
+    const n = foods.length;
+    if (!DRAW_24H_PERIOD) return foods[Math.floor(Math.random() * n)];
+    const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const dayFrac = (now.getTime() - dayStart) / 86400000;   // 0..1，一天一轮
+    const rotation = Math.floor(dayFrac * n);                // 轮替基准，一天转一圈
+    const span = Math.max(1, Math.round(n * 0.4));           // 随机窗口（约 40%）
+    return foods[(rotation + Math.random() * span) % n | 0];
+  }
+  function pickCyclicSignNumber() {
+    return Math.floor(Math.random() * 99) + 1;                // 签号每次都随机
+  }
+
+  function startDraw() {
