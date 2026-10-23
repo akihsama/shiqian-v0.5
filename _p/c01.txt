@@ -1,0 +1,127 @@
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .theme-toggle:hover { transform: scale(1.08); }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: var(--font-xingkai);
+  }
+
+  /* ===== 背景装饰 ===== */
+  .bg-decoration {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255, var(--cloud-opacity));
+    border-radius: 50%;
+    filter: blur(20px);
+  }
+  .cloud:nth-child(1) { width: 200px; height: 80px; top: 10%; left: -20px; animation: floatCloud 20s ease-in-out infinite; }
+  .cloud:nth-child(2) { width: 150px; height: 60px; top: 30%; right: -10px; animation: floatCloud 25s ease-in-out infinite reverse; }
+  .cloud:nth-child(3) { width: 180px; height: 70px; top: 60%; left: 10%; animation: floatCloud 22s ease-in-out infinite 3s; }
+  .cloud:nth-child(4) { width: 120px; height: 50px; top: 80%; right: 20%; animation: floatCloud 18s ease-in-out infinite 5s; }
+
+  @keyframes floatCloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(30px); }
+  }
+
+  /* 樱花花瓣 - 暗色下稍微调亮 */
+  .petal {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #F8BBD0 0%, #F48FB1 100%);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    animation: fallPetal linear infinite;
+  }
+  
+  html[data-theme="dark"] .petal {
+      background: radial-gradient(circle, #fbcfe8 0%, #f472b6 100%);
+      opacity: 0.8;
+      box-shadow: 0 0 5px rgba(244, 114, 182, 0.5);
+  }
+
+  @keyframes fallPetal {
+    0% { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(100vh) rotate(720deg) translateX(80px); opacity: 0; }
+  }
+
+  /* ===== 主容器 ===== */
+  .app-container {
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== 头部 ===== */
+  .header {
+    text-align: center;
+    padding: 30px 0 20px;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-family: var(--font-xingkai);
+    font-size: 36px;
+    color: var(--text-primary);
+    text-shadow: 0 2px 8px var(--glow-color);
+    margin-bottom: 8px;
+    letter-spacing: 4px;
+  }
+
+  .header-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+  }
+
+  .header-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-secondary), transparent);
+    margin: 16px auto;
+  }
+
+  /* ===== 签筒区域 ===== */
+  .lottery-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    flex-shrink: 0;
+  }
+
+  .container-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 24px;
+  }
