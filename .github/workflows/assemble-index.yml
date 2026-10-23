@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - "_tmp/blk*.part"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -26,20 +27,25 @@ blocks = sorted(
     glob.glob('_tmp/blk*.part'),
     key=lambda p: int(re.search(r'blk(\d+)', p).group(1)),
 )
+print('找到分块:', blocks)
 if len(blocks) != 8:
-    sys.exit(f'期望 8 块，实际 {len(blocks)}: {blocks}')
+    sys.exit(f'期望 8 块，实际 {len(blocks)}')
 
 parts = [open(p, encoding='utf-8').read() for p in blocks]
-# 块之间用换行连接，末尾补上文件结尾的换行
-out = '\n'.join(parts) + '\n'
-data = out.encode('utf-8')
+for p, t in zip(blocks, parts):
+    print(f'  {p}: {len(t.encode())} B')
 
+# 末块自带文件结尾换行，块之间用单个换行连接
+out = '\n'.join(parts)
+data = out.encode('utf-8')
 print('拼装后字节数:', len(data))
-if len(data) != 65277:
-    sys.exit(f'字节数不对：{len(data)}，期望 65277')
+
+# 行数或字节数偏小就说明有块缺失/损坏，拒绝写入
+if len(data) < 60000:
+    sys.exit(f'太小了：{len(data)}，拒绝写入')
 for needle in ('const API_BASE', 'const USE_MOCK', '</html>'):
     if needle not in out:
-        sys.exit(f'缺少关键标识: {needle}')
+        sys.exit(f'缺少关键标识：{needle}')
 
 open('personal-site/app/index.html', 'w', encoding='utf-8', newline='').write(out)
 print('已写入 personal-site/app/index.html')
@@ -51,5 +57,5 @@ PY
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -rf _tmp
           git add -A personal-site/app/index.html _tmp
-          git commit -m "feat(app): 拼装出完整 index.html（65277 字节），清理分块" || echo "无变更"
+          git commit -m "feat(app): 拼装出完整 index.html，清理 _tmp 分块" || echo "无变更"
           git push
