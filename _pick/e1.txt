@@ -1,0 +1,84 @@
+      --card-bg-start: #451a03;
+      --card-bg-end: #78350f;
+      --card-text: #fef3c7;
+  }
+
+  body {
+    font-family: var(--font-xingkai);
+    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 40%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    color: var(--text-primary);
+    transition: background 0.5s ease;
+  }
+
+  /* ===== 深浅色切换按钮 ===== */
+  /* wallpaper background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+   background-image: url("../assets/img/wallpaper.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px) brightness(0.85);
+    opacity: 0.6;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(0.5px);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 50;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--container-border);
+    background: var(--container-bg);
+    color: var(--text-primary);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .theme-toggle:hover { transform: scale(1.08); }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: var(--font-xingkai);
+  }
+
+  /* ===== 背景装饰 ===== */
+  .bg-decoration {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255, var(--cloud-opacity));
+    border-radius: 50%;
+    filter: blur(20px);
+  }
