@@ -1,0 +1,104 @@
+    { name: '宫保鸡丁', emoji: '🍗', desc: '川菜 鸡丁脆嫩花生香，酸甜微辣开味菜', fortune: '中吉', blessing: '脆爽利落，快意人生' },
+    { name: '水煮鱼', emoji: '🐟', desc: '川菜 热油浇开辣椒花椒，鱼肉滑嫩汤红味厚', fortune: '大吉', blessing: '红油翻滚，热情似火' },
+    { name: '回锅肉', emoji: '🥩', desc: '川菜 酱香回锅微焦边，蒜苗同炒老川菜', fortune: '吉', blessing: '有来有往，圆融得体' },
+    { name: '鱼香肉丝', emoji: '🥢', desc: '川菜 酸甜咸鲜微辣，家常经典百吃不腻', fortune: '中吉', blessing: '五味俱全，调和人生' },
+    { name: '口水鸡', emoji: '🐔', desc: '川菜 红油辣汁浇嫩鸡，麻辣鲜香令人直流口水', fortune: '吉', blessing: '垂涎欲滴，口福不浅' },
+    { name: '九转大肠', emoji: '🍥', desc: '鲁菜 酸辣甜咸五味陈，刀工火候功夫菜', fortune: '大吉', blessing: '九转回肠，终成正果' },
+    { name: '糖醋鲤鱼', emoji: '🐟', desc: '鲁菜 跃龙门造型脆甜，山东名宴头牌菜', fortune: '大吉', blessing: '鱼跃龙门，步步高升' },
+    { name: '葱烧海参', emoji: '🧄', desc: '鲁菜 葱香浓郁裹软糯海参，宴席大菜', fortune: '吉', blessing: '藏器待时，厚积薄发' },
+    { name: '德州扒鸡', emoji: '🦃', desc: '鲁菜 一撕脱骨肉烂而骨香，老字号招牌', fortune: '小吉', blessing: '骨肉相连，情谊绵长' },
+    { name: '白切鸡', emoji: '🐔', desc: '粤菜 皮滑肉嫩浸汤鸡，蘸酱油鲜甜本味', fortune: '中吉', blessing: '返璞归真，本味最真' },
+    { name: '虾饺', emoji: '🥟', desc: '粤菜 水晶薄皮透虾仁，广式早茶头牌', fortune: '大吉', blessing: '晶莹剔透，心意通透' },
+    { name: '烧鹅', emoji: '🦆', desc: '粤菜 皮脆肉汁甜油香，烧腊摊的招牌', fortune: '吉', blessing: '皮脆肉实，外圆内方' },
+    { name: '老火靓汤', emoji: '🍲', desc: '粤菜 文火慢炖几小时，一碗汤养出元气', fortune: '小吉', blessing: '慢火养功，温厚绵长' },
+    { name: '肠粉', emoji: '🥞', desc: '粤菜 米浆蒸薄皮裹料，滑嫩爽滑早茶人气', fortune: '中吉', blessing: '薄而有味，简而有致' },
+    { name: '松鼠鳜鱼', emoji: '🐟', desc: '苏菜 炸成松鼠浇糖醋，酸甜脆嫩造型菜', fortune: '大吉', blessing: '松鼠献瑞，活泼生动' },
+    { name: '大煮干丝', emoji: '🥣', desc: '苏菜 豆腐干切细丝配火腿，刀工精细功夫', fortune: '中吉', blessing: '细水长流，功夫到家' },
+    { name: '蟹粉狮子头', emoji: '🍚', desc: '苏菜 酥烂大肉丸配蟹粉，淮扬经典名菜', fortune: '吉', blessing: '团团圆圆，丰腴有余' },
+    { name: '盐水鸭', emoji: '🦆', desc: '苏菜 皮白肉嫩咸香清爽，金陵家常名吃', fortune: '小吉', blessing: '清淡见真，静水流深' },
+    { name: '西湖醋鱼', emoji: '🐟', desc: '浙菜 西湖草鱼浇糖醋汁，鲜嫩酸甜带虾霜', fortune: '中吉', blessing: '临湖而食，心境澄明' },
+    { name: '东坡肉', emoji: '🥩', desc: '浙菜 焖到酥烂入口即化，酒香入肉慢火造', fortune: '大吉', blessing: '慢工出细活，厚道人' },
+    { name: '龙井虾仁', emoji: '🦐', desc: '浙菜 明前龙井配嫩虾仁，茶香与鲜味相融', fortune: '小吉', blessing: '清雅脱俗，茶香满口' },
+    { name: '佛跳墙', emoji: '🥘', desc: '闽菜 几十味食材同炖一坛，闽菜头牌功夫菜', fortune: '大吉', blessing: '群芳共炖，和合共生' },
+    { name: '荔枝肉', emoji: '🍒', desc: '闽菜 炸成荔枝状浇糖醋，酸甜脆嫩下饭王', fortune: '中吉', blessing: '外脆里嫩，甜中带酸' },
+    { name: '醉排骨', emoji: '🍖', desc: '闽菜 酒香裹排骨酥烂入味，微醺风味', fortune: '吉', blessing: '小醉怡情，乐在其中' },
+    { name: '剁椒鱼头', emoji: '🌶️', desc: '湘菜 剁椒蒸出鲜辣，鱼头鲜嫩湘菜名片', fortune: '大吉', blessing: '辣得响亮，敢作敢当' },
+    { name: '辣椒炒肉', emoji: '🥩', desc: '湘菜 肉片与鲜椒同炒，下饭国民家常菜', fortune: '中吉', blessing: '有辣有肉，日子红火' },
+    { name: '腊味合蒸', emoji: '🥓', desc: '湘菜 腊肠腊肉腊鸭同蒸，腊香聚气', fortune: '吉', blessing: '集腊蓄福，岁月留香' },
+    { name: '臭鳜鱼', emoji: '🐟', desc: '徽菜 发酵鲜香独特，徽菜最具争议招牌', fortune: '大吉', blessing: '先臭后香，好事多磨' },
+    { name: '毛豆腐', emoji: '🥡', desc: '徽菜 长白毛的豆腐煎得酥，徽州名小吃', fortune: '小吉', blessing: '破旧立新，别有洞天' },
+    { name: '火腿炖甲鱼', emoji: '🐢', desc: '徽菜 火腿配甲鱼文火炖，滋补徽帮大菜', fortune: '吉', blessing: '甲鱼聚气，稳稳当当' }
+  ];
+
+  // ================= 后端 / Agent 配置（v0.5） =================
+  // 后端上线后（见 backend/README.md），把 Worker 地址填到下面这行，末尾不带斜杠。
+  // 例如：const API_BASE = 'https://shiqian-api.你的子域.workers.dev';
+  // 留空（''）时走同源 /api/*；两者都不可达时自动降级为本地食神 + 本地签库。
+  const API_BASE = 'https://shiqian-agent.3314445455.workers.dev';
+
+  // mock = true 时完全不发网络请求，用 app/js/mock.js 的示例数据预览 UI。
+  const USE_MOCK = false;
+
+  // AI 接口：POST /v1/chat
+  // 请求：{ messages, context: { city, lat, lng, foods[], currentFood, prefs[] } }
+  // 响应：{ reply, foodName?, recommend?, sources?[], model, provider, usage }
+  const AGENT_CONFIG = Object.freeze({
+    model: 'glm-4.7-flash',
+    timeoutMs: 40000,
+    fallbackToLocal: true,
+    maxHistoryMessages: 8
+  });
+
+  if (window.ShiqianApi) {
+    window.ShiqianApi.configure({ baseUrl: API_BASE ? API_BASE + '/api' : '/api', mock: USE_MOCK });
+  }
+
+  let conversation = [];
+  let isSending = false;
+  let isDrawing = false;
+  let isStickOpened = false;
+  let history = [];
+
+  // ===== 深浅色主题切换 =====
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  }
+  initTheme();
+
+  function createPetals() {
+    const body = document.body;
+    for (let i = 0; i < 8; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.animationDuration = (8 + Math.random() * 6) + 's';
+      petal.style.animationDelay = Math.random() * 10 + 's';
+      petal.style.width = (6 + Math.random() * 8) + 'px';
+      petal.style.height = (6 + Math.random() * 8) + 'px';
+      body.appendChild(petal);
+    }
+  }
+
+  // ===== 抽签：24h 周期轮替 + 每次随机变换 =====
+  // 每支签都随机变化（同一时段不会锁死同一支），但整体以「一天 24 小时」
+  // 为一个周期做轮替：用当前时刻在一天中的位置作为轮替基准，随机窗口围绕
+  // 基准取材，保证一整天把菜系轮替一圈。
+  const DRAW_24H_PERIOD = true;   // 设为 false 则完全纯随机
+  function pickCyclicFood(now = new Date()) {
+    const foods = foodDatabase;
+    const n = foods.length;
+    if (!DRAW_24H_PERIOD) return foods[Math.floor(Math.random() * n)];
