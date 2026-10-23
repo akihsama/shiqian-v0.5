@@ -1,0 +1,44 @@
+      { pattern: /(甜|点心|下午茶|甜品|蛋糕)/, foods: ['抹茶甜品', '提拉米苏', '章鱼小丸子'] },
+      { pattern: /(快|简单|方便|上班|赶时间)/, foods: ['蛋包饭', '日式咖喱饭', '小笼包'] },
+      { pattern: /(暖|汤|热乎|天气冷|暖胃)/, foods: ['红烧牛肉面', '海鲜粥', '越南河粉', '日式咖喱饭'] },
+      { pattern: /(面|面条|粉)/, foods: ['红烧牛肉面', '意大利面', '酸辣粉', '越南河粉'] }
+    ];
+
+    preferenceRules.forEach(rule => {
+      if (rule.pattern.test(lower)) {
+        rule.foods.forEach(name => preferredNames.add(name));
+      }
+    });
+
+    let candidates = foodDatabase.filter(food => {
+      if (/(不辣|忌辣|免辣|怕辣)/.test(lower) && /(辣|麻)/.test(food.name)) return false;
+      if (wantsSpicy) return /(辣|麻)/.test(food.name);
+      return preferredNames.size === 0 || preferredNames.has(food.name);
+    });
+
+    if (candidates.length === 0) candidates = [...foodDatabase];
+
+    const previousFood = history[0]?.name;
+    const variedCandidates = candidates.length > 1
+      ? candidates.filter(food => food.name !== previousFood)
+      : candidates;
+    const pool = variedCandidates.length > 0 ? variedCandidates : candidates;
+    const food = pool[Math.floor(Math.random() * pool.length)];
+
+    const openings = [
+      `根据你的描述，食神推荐你试试【${food.name}】${food.emoji}`,
+      `让食神想了想，今天适合吃【${food.name}】${food.emoji}`,
+      `食神感应到你的需求，为你推荐【${food.name}】${food.emoji}`
+    ];
+
+    return `${openings[Math.floor(Math.random() * openings.length)]}\n\n${food.desc}\n\n「${food.blessing}」`;
+  }
+  createPetals();
+
+  // ===== v0.5 启动：初始化平台面板 =====
+  if (window.ShiqianPane) {
+    window.ShiqianPane.init();
+  }
+  </script>
+  <!-- sound fx + ambient rain/wind -->
+  <style>
