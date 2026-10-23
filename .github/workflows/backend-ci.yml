@@ -1,0 +1,39 @@
+# v0.5 后端 CI：后端/前端源码变动时跑语法检查与单测
+name: Backend CI (v0.5)
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "personal-site/backend/**"
+      - "personal-site/app/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "personal-site/backend/**"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: personal-site/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 语法检查
+        run: |
+          for f in worker.js src/*.js src/providers/*.js; do node --check "$f"; done
+
+      - name: 单元测试
+        run: node --test test/*.test.mjs
+
+      - name: 前端模块语法检查
+        run: |
+          for f in ../app/js/*.js; do node --check "$f"; done
