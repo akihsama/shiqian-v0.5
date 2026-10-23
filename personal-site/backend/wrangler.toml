@@ -9,14 +9,14 @@ main = "worker.js"
 compatibility_date = "2025-10-01"
 compatibility_flags = ["nodejs_compat"]
 
-# ── 用量记账 / 限流用的 KV ──────────────────────────────────────────
+# ── 用量记账 / 限流用的 KV ────────────────────────────────────────
 # 创建：wrangler kv namespace create USAGE
 # 把打印出来的 id 填到下面（binding 名保持 USAGE 不变）
 [[kv_namespaces]]
 binding = "USAGE"
 id = "bbe75bb900b24ce78112cd361dd61874"
 
-# ── 非密钥配置（可以直接写在仓库里）─────────────────────────────────
+# ── 非密钥配置（可以直接写在仓库里）────────────────────────────
 [vars]
 # AI 提供商：zhipu（智谱 GLM，输入输出全免费）| deepseek（按 token 计费）
 AI_PROVIDER = "zhipu"
@@ -29,7 +29,7 @@ MAX_OUTPUT_TOKENS = "320"
 # 一次覆盖 Pages 项目域名（shiqian.pages.dev）和每次部署的哈希预览域名。
 ALLOWED_ORIGINS = "https://akihsama.github.io,https://*.pages.dev,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001"
 
-# ── 密钥（不要写在这个文件里）──────────────────────────────────
+# ── 密钥（不要写在这个文件里）──────────────────────────────────────
 # wrangler secret put ZHIPU_API_KEY           智谱开放平台 bigmodel.cn 申请，Flash 系列免费
 # wrangler secret put DEEPSEEK_API_KEY        （可选）DeepSeek key；仅当 AI_PROVIDER=deepseek
 #                                             或想启用联网搜索时才需要
