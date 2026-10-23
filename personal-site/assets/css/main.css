@@ -1,0 +1,87 @@
+/* personal-site/assets/css/main.css
+   A minimal, clean responsive stylesheet for the Jekyll personal-site
+   Provides layout, hero, buttons, cards, typography and simple theme variables.
+*/
+:root{
+  --bg:#0f1720; /* dark background */
+  --card:#0b1220;
+  --text:#e6eef8;
+  --muted:#9fb3d6;
+  --accent:#ff7aa2; /* pink accent */
+  --accent-2:#7dd3fc; /* sky */
+  --radius:10px;
+  --max-width:980px;
+  --gap:18px;
+  --container-padding:20px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:linear-gradient(180deg,#071025 0%, #081122 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+}
+
+.container{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:var(--container-padding);
+}
+
+/* Header / nav */
+header{padding:18px 0}
+header .brand{display:flex;align-items:center;gap:12px}
+header h1{margin:0;font-size:1.15rem}
+header nav{margin-top:8px}
+header nav a{color:var(--muted);text-decoration:none;margin-right:14px}
+header nav a:hover{color:var(--text)}
+
+/* Hero */
+.hero{
+  padding:32px 0 24px;
+  text-align:center;
+}
+.hero .hi{font-size:2.1rem;margin:0 0 6px;font-weight:700}
+.hero .role{color:var(--muted);margin:0 0 14px}
+.hero .bio{max-width:720px;margin:0 auto;color:var(--muted)}
+.actions{margin-top:18px}
+.btn{
+  display:inline-block;padding:10px 16px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#071025;text-decoration:none;font-weight:600;margin-right:8px;box-shadow:0 6px 18px rgba(125,211,252,0.08);
+}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap);margin-top:12px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(2,6,23,0.6);}
+.card h3{margin:8px 0 6px}
+.card p{color:var(--muted);margin:0}
+.tag{display:inline-block;background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:13px}
+
+/* About */
+#about{margin-top:26px;padding-bottom:28px}
+
+/* Protected width for blog content */
+.main-content{background:transparent}
+
+/* Footer */
+footer{margin-top:40px;padding:20px 0;color:var(--muted);text-align:center;font-size:0.95rem}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  .hero .hi{font-size:1.6rem}
+  .cards{grid-template-columns:1fr}
+}
+
+/* Misc */
+a{color:var(--accent);}
+pre,code{background:rgba(255,255,255,0.03);padding:6px;border-radius:6px;color:var(--text);font-family:ui-monospace, SFMono-Regular, Menlo, monospace}
+
+/* Utility spacing */
+.mt-8{margin-top:8px}
+.mb-8{margin-bottom:8px}
