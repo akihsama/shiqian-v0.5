@@ -1,0 +1,46 @@
+    if (isDrawing) return;
+    isDrawing = true;
+    isStickOpened = false;
+
+    const overlay = document.getElementById('immersiveOverlay');
+    const container = document.getElementById('immersiveContainer');
+    const flyingStick = document.getElementById('flyingStick');
+    const stickSealed = document.getElementById('stickSealed');
+    const stickCard = document.getElementById('stickCard');
+    const glowEffect = document.getElementById('glowEffect');
+    const closeHint = document.getElementById('closeHint');
+
+    container.classList.remove('show', 'shaking');
+    flyingStick.classList.remove('fly-out', 'opened');
+    stickSealed.classList.remove('hidden');
+    stickCard.classList.remove('unfold');
+    glowEffect.classList.remove('active');
+    closeHint.classList.remove('show');
+    const cpReset = document.getElementById('cardPlatform');
+    if (cpReset) { cpReset.hidden = true; cpReset.innerHTML = ''; }
+
+    overlay.classList.add('active');
+
+    const food = pickCyclicFood();
+    const signNum = pickCyclicSignNumber();
+
+    document.getElementById('sealedFortune').textContent = food.fortune;
+    document.getElementById('cardFortune').textContent = food.fortune;
+    document.getElementById('cardNumber').textContent = `第 ${numToChinese(signNum)} 签`;
+    document.getElementById('cardEmoji').textContent = food.emoji;
+    document.getElementById('cardFoodName').textContent = food.name;
+    document.getElementById('cardFoodDesc').textContent = food.desc;
+    document.getElementById('cardBlessing').textContent = food.blessing;
+
+    window.currentFood = food;
+
+    setTimeout(() => { container.classList.add('show'); }, 300);
+    setTimeout(() => { container.classList.add('shaking'); }, 900);
+    setTimeout(() => {
+      container.classList.remove('shaking');
+      flyingStick.classList.add('fly-out');
+      glowEffect.classList.add('active');
+      createParticles();
+    }, 2800);
+    setTimeout(() => {
+      closeHint.classList.add('show');
