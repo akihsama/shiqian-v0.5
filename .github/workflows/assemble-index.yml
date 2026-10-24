@@ -1,13 +1,12 @@
 name: Assemble index.html
 
-# index.html 约 65KB，超出推送通道的无损上限（实测量级越大越容易被改写个别汉字），
-# 因此拆成 45 片存在 _p2/ 下（每片 ≤1.7KB，逐字节校验通过）。
-# 这个 workflow 按 scripts/assemble_index.py 的顺序拼回去，覆盖
-# personal-site/app/index.html，并校验字节数与关键标识后再提交。
+# index.html 约 65KB，超出推送通道的无损上限（越大越容易被改写个别汉字），
+# 因此拆成 45 片存在 _p2/ 下（每片 ≤1.7KB，已逐字节校验）。
+# 本 workflow 调用 scripts/assemble_index.py 拼回并覆盖 personal-site/app/index.html。
 on:
   push:
     paths:
-      - "_p2/**.txt"
+      - "_p2/**"
       - "scripts/assemble_index.py"
       - ".github/workflows/assemble-index.yml"
   workflow_dispatch:
@@ -20,58 +19,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 拼装并校验
+      - name: Assemble and verify
+        run: python3 scripts/assemble_index.py
+
+      - name: Commit
         run: |
-          python3 - <<'PY'
-import sys
-from pathlib import Path
-
-ORDER = (
-    [f"p{i:03d}.txt" for i in range(0, 21)]
-    + ["p021a.txt", "p021b.txt", "p022a.txt", "p022b.txt"]
-    + [f"p{i:03d}.txt" for i in range(23, 43)]
-)
-EXPECTED = 65277
-
-src = Path("_p2")
-missing = [n for n in ORDER if not (src / n).exists()]
-if missing:
-    sys.exit(f"缺少分片: {missing}")
-
-extra = sorted({p.name for p in src.glob("*.txt")} - set(ORDER))
-if extra:
-    sys.exit(f"_p2/ 下有未列入清单的文件: {extra}")
-
-chunks = [(src / n).read_bytes() for n in ORDER]
-data = b"\n".join(chunks)
-print(f"分片 {len(chunks)} 个，拼装 {len(data)} 字节")
-
-if len(data) != EXPECTED:
-    sys.exit(f"字节数不对：{len(data)}，期望 {EXPECTED}，拒绝写入")
-
-text = data.decode("utf-8")
-for needle in (
-    "<!DOCTYPE html>",
-    "const API_BASE = 'https://shiqian-agent.3314445455.workers.dev';",
-    "const USE_MOCK = false;",
-    "window.ShiqianPane.init();",
-    "</html>",
-):
-    if needle not in text:
-        sys.exit(f"缺少关键标识：{needle}")
-
-out = Path("personal-site/app/index.html")
-out.write_bytes(data)
-print(f"已写入 {out}")
-PY
-
-      - name: 提交
-        run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add personal-site/app/index.html
-          git diff --cached --quiet && echo "内容无变化，跳过提交" || \
-            (git commit -m "build(app): 由 _p2/ 分片拼装 index.html（65277 字节）" && git push origin HEAD:main)
+          if git diff --cached --quiet; then
+            echo "内容无变化，跳过提交"
+          else
+            git commit -m "build(app): 由 _p2/ 分片拼装 index.html（65277 字节）"
+            git push origin HEAD:main
+          fi
