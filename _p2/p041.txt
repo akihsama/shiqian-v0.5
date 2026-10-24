@@ -1,0 +1,32 @@
+        var lg = c.createGain(); lg.gain.value = 0.13; lfo.connect(lg); lg.connect(gain.gain);
+        var lfo2 = c.createOscillator(); lfo2.type = 'sine'; lfo2.frequency.value = 0.05;
+        var lf = c.createGain(); lf.gain.value = 260; lfo2.connect(lf); lf.connect(filter.frequency);
+        lfo.start(); lfo2.start();
+        lfos = [lfo, lfo2];
+      }
+      filter.connect(gain); gain.connect(c.destination);
+      src.start();
+      amb = { src: src, gain: gain, lfos: lfos };
+    }
+    function setAmbient(which){
+      if (which === current) return;
+      current = which;
+      if (which === 'off') stopAmbient(); else startAmbient(which);
+      updateUI();
+    }
+    var labels = { off: '🔊 关', rain: '🌧️ 雨声', wind: '🌬️ 风声' };
+    function updateUI(){
+      var b = document.getElementById('sndToggle');
+      if (b) b.textContent = labels[current];
+      document.querySelectorAll('#soundWidget .snd-opt').forEach(function(o){
+        o.classList.toggle('active', o.getAttribute('data-mode') === current);
+      });
+    }
+    var w = document.getElementById('soundWidget');
+    if (w){
+      w.innerHTML =
+        '<button id="sndToggle" class="snd-btn" type="button">🔊 关</button>' +
+        '<div class="snd-menu" id="sndMenu">' +
+        '<button class="snd-opt" type="button" data-mode="off">关闭</button>' +
+        '<button class="snd-opt" type="button" data-mode="rain">雨声</button>' +
+        '<button class="snd-opt" type="button" data-mode="wind">风声</button>' +
