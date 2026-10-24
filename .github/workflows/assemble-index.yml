@@ -1,13 +1,17 @@
 name: Assemble index.html
 
-# index.html 约 65KB，超出推送通道的无损上限（越大越容易被改写个别汉字），
-# 因此拆成 45 片存在 _p2/ 下（每片 ≤1.7KB，已逐字节校验）。
-# 本 workflow 调用 scripts/assemble_index.py 拼回并覆盖 personal-site/app/index.html。
+# index.html 约 66KB，超出推送通道的无损上限（越大越容易被改写个别汉字），
+# 所以由两部分生成：
+#   1) scripts/assemble_index.py  从 _p2/ 45 片拼出基线
+#   2) scripts/apply_patches.py   依次应用 patches/index-fixes-*.json 的小改动
+#                                  （每条补丁单文件 <1.6KB，逐字节无损）
 on:
   push:
     paths:
       - "_p2/**"
+      - "patches/**"
       - "scripts/assemble_index.py"
+      - "scripts/apply_patches.py"
       - ".github/workflows/assemble-index.yml"
   workflow_dispatch:
 
@@ -20,22 +24,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Assemble and verify
+      - name: Assemble base
         run: python3 scripts/assemble_index.py
 
-      - name: Clean scratch dirs
-        run: |
-          rm -rf _tmp _tmp2 _probe _pick _p _b64
-          rm -f .probe-permission .tmp-placeholder _config.yml README.md
+      - name: Apply patches
+        run: python3 scripts/apply_patches.py
 
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add personal-site/app/index.html
           if git diff --cached --quiet; then
             echo "内容无变化，跳过提交"
           else
-            git commit -m "build(app): 由 _p2/ 分片拼装 index.html（65277 字节）并清理临时目录"
+            git commit -m "build(app): 拼装 index.html 并应用 patches/"
             git push origin HEAD:main
           fi
