@@ -1,0 +1,5 @@
+    { name: '糖醋鲤鱼', emoji: '🐟', desc: '鲁菜 跃龙门造型脆甜，山东名宴头牌菜', fortune: '大吉', blessing: '鱼跃龙门，步步高升' },
+    { name: '葱烧海参', emoji: '🧄', desc: '鲁菜 葱香浓郁裹软糯海参，宴席大菜', fortune: '吉', blessing: '藏器待时，厚积薄发' },
+    { name: '德州扒鸡', emoji: '🦃', desc: '鲁菜 一撕脱骨肉烂而骨香，老字号招牌', fortune: '小吉', blessing: '骨肉相连，情谊绵长' },
+    { name: '白切鸡', emoji: '🐔', desc: '粤菜 皮滑肉嫩浸汤鸡，蘸酱油鲜甜本味', fortune: '中吉', blessing: '返璞归真，本味最真' },
+    { name: '虾饺', emoji: '🥟', desc: '粤菜 水晶薄皮透虾仁，广式早茶头牌', fortune: '大吉', blessing: '晶莹剔透，心意通透' },
