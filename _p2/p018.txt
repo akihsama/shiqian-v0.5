@@ -1,0 +1,37 @@
+      <div class="sticks-in-container">
+        <div class="stick-preview"></div>
+        <div class="stick-preview"></div>
+        <div class="stick-preview"></div>
+        <div class="stick-preview"></div>
+        <div class="stick-preview"></div>
+      </div>
+      <div class="container-rim"></div>
+      <div class="container-body">
+        <div class="container-label">食运签</div>
+      </div>
+      <div class="rope-knot">
+        <div class="rope-band"></div>
+        <div class="rope-knot-center"></div>
+        <div class="rope-tassel"></div>
+      </div>
+    </div>
+
+    <div class="flying-stick" id="flyingStick">
+      <div class="stick-body">
+        <div class="stick-wood"></div>
+        <div class="stick-tip"></div>
+      </div>
+      <div class="stick-sealed" id="stickSealed" onclick="openStick(event)">
+        <div class="sealed-text" id="sealedFortune">大吉</div>
+        <div class="sealed-hint">👆 点击翻开</div>
+        <div class="cloud-pattern"></div>
+      </div>
+      <div class="stick-card" id="stickCard">
+        <div class="card-header">
+          <div class="card-fortune" id="cardFortune">大吉</div>
+          <div class="card-number" id="cardNumber">第 八 签</div>
+        </div>
+        <div class="card-food">
+          <div class="card-food-emoji" id="cardEmoji">🍣</div>
+          <div class="card-food-name" id="cardFoodName">寿司拼盘</div>
+          <div class="card-food-desc" id="cardFoodDesc">新鲜的鱼肉搭配醇饭，口感丰富，今日宜品尝日式料理</div>
