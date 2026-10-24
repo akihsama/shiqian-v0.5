@@ -1,0 +1,39 @@
+    const currentFood = window.currentFood
+      ? { name: window.currentFood.name, desc: window.currentFood.desc }
+      : null;
+
+    return window.ShiqianApi.chat({
+      messages: conversation.slice(-AGENT_CONFIG.maxHistoryMessages),
+      timeoutMs: AGENT_CONFIG.timeoutMs,
+      context: {
+        city: ctx ? ctx.city.name : '',
+        lat: ctx ? ctx.lat : undefined,
+        lng: ctx ? ctx.lng : undefined,
+        currentFood,
+        // 附近已有平台数据时只传前 20 条，避免 prompt 过长（省钱）
+        nearby: pane ? (pane.products || []).slice(0, 20).map(p => ({
+          name: p.title,
+          price: p.price,
+          shop: p.shopName,
+          source: p.source
+        })) : [],
+        foods: foodDatabase.map(food => ({ name: food.name, desc: food.desc }))
+      }
+    });
+  }
+
+  function renderAgentReply(reply, sourceLabel, sourceType, detail = '', sources = []) {
+    const result = document.getElementById('llmResult');
+    const source = document.createElement('div');
+    const content = document.createElement('div');
+
+    source.className = 'agent-reply-source';
+    source.textContent = detail ? `${sourceLabel} · ${detail}` : sourceLabel;
+    content.textContent = normalizeReply(reply);
+
+    result.replaceChildren(source, content);
+
+    // 联网搜索结果作为小字来源列表，让用户知道这句话有出处
+    if (Array.isArray(sources) && sources.length) {
+      const box = document.createElement('div');
+      box.className = 'agent-sources';
