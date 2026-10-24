@@ -1,0 +1,44 @@
+    });
+  }
+
+  function addHistory(food) {
+    const now = new Date();
+    const timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+    
+    history.unshift({ name: food.name, emoji: food.emoji, time: timeStr });
+    if (history.length > 5) history.pop();
+    
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    list.innerHTML = history.map(item => `
+      <div class="history-item">
+        <span class="food-name">${item.emoji} ${item.name}</span>
+        <span class="food-time">${item.time}</span>
+      </div>
+    `).join('');
+  }
+
+  function handleOverlayClick(event) {
+    if (event.target === document.getElementById('immersiveOverlay') || 
+        event.target === document.getElementById('particlesContainer') ||
+        event.target === document.getElementById('glowEffect')) {
+      closeOverlay();
+    }
+  }
+
+  function closeOverlay() {
+    const overlay = document.getElementById('immersiveOverlay');
+    const container = document.getElementById('immersiveContainer');
+    
+    overlay.classList.add('closing');
+    container.classList.remove('show');
+    
+    setTimeout(() => {
+      overlay.classList.remove('active', 'closing');
+      container.classList.remove('show', 'shaking');
+      document.getElementById('flyingStick').classList.remove('fly-out', 'opened');
+      document.getElementById('stickSealed').classList.remove('hidden');
+      document.getElementById('stickCard').classList.remove('unfold');
