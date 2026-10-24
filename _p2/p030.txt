@@ -1,0 +1,39 @@
+    }, 12000);
+
+    if (!window.ShiqianPane || !window.ShiqianApi || window.ShiqianApi.config.mock) {
+      clearTimeout(timer);
+      box.hidden = true;
+      return;
+    }
+
+    window.ShiqianPane.searchByFood(food.name).then(res => {
+      clearTimeout(timer);
+      const hit = (res && res.products && res.products[0]) || null;
+      const anyConfigured = res && res.sources &&
+        (res.sources.meituan === 'ok' || res.sources.shangou === 'ok');
+
+      if (!hit) {
+        box.innerHTML = '<div class="card-platform-main">' +
+          (anyConfigured ? '附近暂时没搜到这道菜，换个签再看看。' : '平台还没接上，签依然是签。') +
+          '</div>';
+        return;
+      }
+
+      const price = window.ShiqianNormalizer.money(hit.price);
+      const shopName = hit.shopName || '附近门店';
+
+      if (hit.url) {
+        const a = document.createElement('a');
+        a.className = 'card-platform-link';
+        a.href = hit.url;
+        a.target = '_blank';
+        a.rel = 'noopener nofollow';
+        a.textContent = `去${window.ShiqianNormalizer.SOURCE_META[hit.source].label}下单 ${price}`;
+        box.innerHTML = '<div class="card-platform-main">' + shopName + ' · ' + price + '</div>';
+        box.appendChild(a);
+      } else {
+        box.innerHTML = '<div class="card-platform-main">' + shopName + ' · ' + price + '（下方「附近可下单」可看详情）</div>';
+      }
+    }).catch(() => {
+      clearTimeout(timer);
+      box.innerHTML = '<div class="card-platform-main">平台暂时没响应，稍后再试。</div>';
