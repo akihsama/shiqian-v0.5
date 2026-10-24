@@ -1,0 +1,43 @@
+      box.appendChild(document.createTextNode('参考：'));
+      sources.slice(0, 3).forEach((s, i) => {
+        const a = document.createElement('a');
+        a.href = s.url || '#';
+        a.target = '_blank';
+        a.rel = 'noopener nofollow';
+        a.textContent = `${i + 1}. ${s.title || s.site || '来源'}`;
+        box.appendChild(a);
+      });
+      result.appendChild(box);
+    }
+
+    result.dataset.source = sourceType;
+    result.classList.add('show');
+  }
+
+  async function sendLLM() {
+    const input = document.getElementById('llmInput');
+    const text = input.value.trim();
+
+    if (!text || isSending) return;
+
+    isSending = true;
+    input.value = '';
+    setAgentLoading(true);
+    conversation.push({ role: 'user', content: text });
+
+    try {
+      const payload = await requestFoodgod();
+      const reply = normalizeReply(extractAgentReply(payload));
+      const food = resolveFood(payload, reply);
+
+      renderAgentReply(
+        reply,
+        payload.searchUsed ? '美团 · 闪购 · 联网搜索' : '美团 · 闪购',
+        payload.provider || 'ai',
+        payload.model || AGENT_CONFIG.model,
+        payload.sources || []
+      );
+      document.getElementById('agentBadge').textContent = payload.model || AGENT_CONFIG.model;
+      document.getElementById('agentHint').textContent = payload.searchUsed
+        ? '本条回复已联网核对附近真实门店与团购。'
+        : '本条回复基于城市、口味与附近平台数据生成（未联网搜索）。';
