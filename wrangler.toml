@@ -34,4 +34,4 @@ DAILY_MAX_SEARCH = "150"
 MAX_OUTPUT_TOKENS = "320"
 # 站点域名白名单，逗号分隔。https://*.pages.dev 一条通配覆盖 Pages 项目域名
 # 和每次部署的哈希预览域名。绑了自定义域名记得追加在这里。
-ALLOWED_ORIGINS = "https://akihsama.github.io,https://*.pages.dev,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001"
+ALLOWED_ORIGINS = "https://shiqian-v0-5.pages.dev,https://shiqian.pages.dev,https://akihsama.github.io,https://*.pages.dev,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001"
