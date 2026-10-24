@@ -1,0 +1,41 @@
+      particle.style.height = particle.style.width;
+      particle.style.background = Math.random() > 0.5 ? 'var(--gold)' : 'var(--text-secondary)';
+      
+      setTimeout(() => {
+        particle.classList.add('active');
+      }, Math.random() * 500);
+      
+      container.appendChild(particle);
+    }
+  }
+
+  function openStick(event) {
+    event.stopPropagation();
+    if (isStickOpened) return;
+    isStickOpened = true;
+
+    const stickSealed = document.getElementById('stickSealed');
+    const stickCard = document.getElementById('stickCard');
+    const flyingStick = document.getElementById('flyingStick');
+
+    stickSealed.classList.add('hidden');
+    
+    setTimeout(() => {
+      stickCard.classList.add('unfold');
+      flyingStick.classList.add('opened');
+      addHistory(window.currentFood);
+      // v0.5：翻开签的同时，去平台找这道菜的真实商品
+      loadCardPlatform(window.currentFood);
+    }, 300);
+  }
+
+  // ===== v0.5：把签和真实商品接上 =====
+  // 签是"想吃什么"，平台面板是"哪里能买到"，这一步负责把两件事连起来。
+  function loadCardPlatform(food) {
+    const box = document.getElementById('cardPlatform');
+    if (!box || !food) return;
+    box.hidden = false;
+    box.innerHTML = '<div class="card-platform-main">正在美团 / 闪购找「' + food.name + '」…</div>';
+
+    const timer = setTimeout(() => {
+      box.innerHTML = '<div class="card-platform-main">平台响应有点慢，先按签上说的吃吧。</div>';
