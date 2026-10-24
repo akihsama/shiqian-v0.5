@@ -1,0 +1,78 @@
+  }
+
+  .llm-input:focus {
+    border-color: var(--text-secondary);
+    box-shadow: 0 0 12px var(--glow-color);
+  }
+
+  .llm-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .llm-send-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-family: var(--font-xingkai);
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .llm-send-btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  .llm-send-btn:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .llm-result {
+    padding: 14px;
+    background: var(--item-bg);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    display: none;
+    transition: background 0.3s;
+  }
+
+  .llm-result.show {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+  }
+
+  .agent-reply-source {
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .llm-result[data-source='local'] .agent-reply-source {
+    color: var(--text-muted);
+  }
+
+  .llm-thinking {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 14px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .llm-thinking.show {
+    display: flex;
+  }
+
+  .thinking-dots span {
+    display: inline-block;
+    width: 6px;
