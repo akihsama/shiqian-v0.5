@@ -1,0 +1,85 @@
+    stickSealed.classList.add('hidden');
+    
+    setTimeout(() => {
+      stickCard.classList.add('unfold');
+      flyingStick.classList.add('opened');
+      addHistory(window.currentFood);
+      // v0.5：翻开签的同时，去平台找这道菜的真实商品
+      loadCardPlatform(window.currentFood);
+    }, 300);
+  }
+
+  // ===== v0.5：把签和真实商品接上 =====
+  // 签是"想吃什么"，平台面板是"哪里能买到"，这一步负责把两件事连起来。
+  function loadCardPlatform(food) {
+    const box = document.getElementById('cardPlatform');
+    if (!box || !food) return;
+    box.hidden = false;
+    box.innerHTML = '<div class="card-platform-main">正在美团 / 闪购找「' + food.name + '」…</div>';
+
+    const timer = setTimeout(() => {
+      box.innerHTML = '<div class="card-platform-main">平台响应有点慢，先按签上说的吃吧。</div>';
+    }, 12000);
+
+    if (!window.ShiqianPane || !window.ShiqianApi || window.ShiqianApi.config.mock) {
+      clearTimeout(timer);
+      box.hidden = true;
+      return;
+    }
+
+    window.ShiqianPane.searchByFood(food.name).then(res => {
+      clearTimeout(timer);
+      const hit = (res && res.products && res.products[0]) || null;
+      const anyConfigured = res && res.sources &&
+        (res.sources.meituan === 'ok' || res.sources.shangou === 'ok');
+
+      if (!hit) {
+        box.innerHTML = '<div class="card-platform-main">' +
+          (anyConfigured ? '附近暂时没搜到这道菜，换个签再看看。' : '平台还没接上，签依然是签。') +
+          '</div>';
+        return;
+      }
+
+      const price = window.ShiqianNormalizer.money(hit.price);
+      const shopName = hit.shopName || '附近门店';
+
+      if (hit.url) {
+        const a = document.createElement('a');
+        a.className = 'card-platform-link';
+        a.href = hit.url;
+        a.target = '_blank';
+        a.rel = 'noopener nofollow';
+        a.textContent = `去${window.ShiqianNormalizer.SOURCE_META[hit.source].label}下单 ${price}`;
+        box.innerHTML = '<div class="card-platform-main">' + shopName + ' · ' + price + '</div>';
+        box.appendChild(a);
+      } else {
+        box.innerHTML = '<div class="card-platform-main">' + shopName + ' · ' + price + '（下方「附近可下单」可看详情）</div>';
+      }
+    }).catch(() => {
+      clearTimeout(timer);
+      box.innerHTML = '<div class="card-platform-main">平台暂时没响应，稍后再试。</div>';
+    });
+  }
+
+  function addHistory(food) {
+    const now = new Date();
+    const timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+    
+    history.unshift({ name: food.name, emoji: food.emoji, time: timeStr });
+    if (history.length > 5) history.pop();
+    
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    list.innerHTML = history.map(item => `
+      <div class="history-item">
+        <span class="food-name">${item.emoji} ${item.name}</span>
+        <span class="food-time">${item.time}</span>
+      </div>
+    `).join('');
+  }
+
+  function handleOverlayClick(event) {
+    if (event.target === document.getElementById('immersiveOverlay') || 
