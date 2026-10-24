@@ -1,0 +1,1 @@
+{"items":[{"find":"    window.ShiqianApi.configure({ baseUrl: API_BASE ? API_BASE + '/api' : '/api', mock: USE_MOCK });","replace":"    window.ShiqianApi.configure({\n      baseUrl: API_BASE ? API_BASE + '/api' : '/api',\n      altBaseUrls: API_BASE_ALT.map(function (b) { return b ? b + '/api' : '/api'; }),\n      mock: USE_MOCK\n    });"}]}
