@@ -1,0 +1,37 @@
+# 今日食签 v0.5 后端（Cloudflare Worker）—— 仓库根目录入口
+# =============================================================================
+# 这份文件只做一件事：让「Cloudflare 后台 → Import a repository」能直接认出
+# 这是个 Worker 项目，并把入口指到 personal-site/backend/ 子目录。
+#
+# 本地用 CLI 部署时，用子目录那份更顺手：
+#     cd personal-site/backend && wrangler deploy
+#
+# 两份配置的 name / KV id / vars 必须保持一致，改一处记得同步另一处。
+#
+# 密钥（ZHIPU_API_KEY 等）不要写进本文件，用下面任一方式配置：
+#   - Cloudflare 后台 → 项目 → Settings → Variables and Secrets → Add → 选 Secret
+#   - 或本地 wrangler secret put ZHIPU_API_KEY
+# 完整说明见 personal-site/backend/README.md
+
+name = "shiqian-agent"
+main = "personal-site/backend/worker.js"
+compatibility_date = "2025-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ── 用量记账 / 限流用的 KV ──────────────────────────────────────
+[[kv_namespaces]]
+binding = "USAGE"
+id = "bbe75bb900b24ce78112cd361dd61874"
+
+# ── 非密钥配置（与 personal-site/backend/wrangler.toml 保持一致）──────
+[vars]
+# AI 提供商：zhipu（智谱 GLM，输入输出全免费）| deepseek（按 token 计费）
+AI_PROVIDER = "zhipu"
+MODEL = "glm-4.7-flash"
+DAILY_BUDGET_YUAN = "1"
+DAILY_MAX_CALLS = "300"
+DAILY_MAX_SEARCH = "150"
+MAX_OUTPUT_TOKENS = "320"
+# 站点域名白名单，逗号分隔。https://*.pages.dev 一条通配覆盖 Pages 项目域名
+# 和每次部署的哈希预览域名。绑了自定义域名记得追加在这里。
+ALLOWED_ORIGINS = "https://akihsama.github.io,https://*.pages.dev,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001"
