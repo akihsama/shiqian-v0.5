@@ -1,11 +1,15 @@
 name: Assemble index.html
 
-# index.html 很大（65KB），而推送通道单次上限约 8KB，所以拆成 8 块存在 _tmp/。
-# 这个 workflow 把它们拼回去，覆盖 personal-site/app/index.html，然后清掉 _tmp。
+# index.html 约 65KB，超出推送通道的无损上限（实测量级越大越容易被改写个别汉字），
+# 因此拆成 45 片存在 _p2/ 下（每片 ≤1.7KB，逐字节校验通过）。
+# 这个 workflow 按 scripts/assemble_index.py 的顺序拼回去，覆盖
+# personal-site/app/index.html，并校验字节数与关键标识后再提交。
 on:
   push:
     paths:
-      - "_tmp/blk*.part"
+      - "_p2/**.txt"
+      - "scripts/assemble_index.py"
+      - ".github/workflows/assemble-index.yml"
   workflow_dispatch:
 
 permissions:
@@ -22,44 +26,52 @@ jobs:
       - name: 拼装并校验
         run: |
           python3 - <<'PY'
-import glob, re, sys
+import sys
+from pathlib import Path
 
-blocks = sorted(
-    glob.glob('_tmp/blk*.part'),
-    key=lambda p: int(re.search(r'blk(\d+)', p).group(1)),
+ORDER = (
+    [f"p{i:03d}.txt" for i in range(0, 21)]
+    + ["p021a.txt", "p021b.txt", "p022a.txt", "p022b.txt"]
+    + [f"p{i:03d}.txt" for i in range(23, 43)]
 )
-print('找到分块:', blocks)
-if len(blocks) != 8:
-    sys.exit(f'期望 8 块，实际 {len(blocks)}')
+EXPECTED = 65277
 
-parts = []
-for p in blocks:
-    with open(p, encoding='utf-8') as f:
-        t = f.read()
-    parts.append(t)
-    print(f'  {p}: {len(t.encode())} B')
+src = Path("_p2")
+missing = [n for n in ORDER if not (src / n).exists()]
+if missing:
+    sys.exit(f"缺少分片: {missing}")
 
-# 块之间用换行连接；末块自带末尾换行，不再额外补
-out = '\n'.join(parts)
-data = out.encode('utf-8')
-print('拼装后字节数:', len(data))
+extra = sorted({p.name for p in src.glob("*.txt")} - set(ORDER))
+if extra:
+    sys.exit(f"_p2/ 下有未列入清单的文件: {extra}")
 
-if len(data) != 65277:
-    sys.exit(f'字节数不对：{len(data)}，期望 65277，拒绝写入')
-for needle in ('const API_BASE', 'const USE_MOCK', '</html>'):
-    if needle not in out:
-        sys.exit(f'缺少关键标识：{needle}')
+chunks = [(src / n).read_bytes() for n in ORDER]
+data = b"\n".join(chunks)
+print(f"分片 {len(chunks)} 个，拼装 {len(data)} 字节")
 
-with open('personal-site/app/index.html', 'w', encoding='utf-8', newline='') as f:
-    f.write(out)
-print('已写入')
+if len(data) != EXPECTED:
+    sys.exit(f"字节数不对：{len(data)}，期望 {EXPECTED}，拒绝写入")
+
+text = data.decode("utf-8")
+for needle in (
+    "<!DOCTYPE html>",
+    "const API_BASE = 'https://shiqian-agent.3314445455.workers.dev';",
+    "const USE_MOCK = false;",
+    "window.ShiqianPane.init();",
+    "</html>",
+):
+    if needle not in text:
+        sys.exit(f"缺少关键标识：{needle}")
+
+out = Path("personal-site/app/index.html")
+out.write_bytes(data)
+print(f"已写入 {out}")
 PY
 
-      - name: 提交并清理
+      - name: 提交
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -rf _tmp
-          git add -A personal-site/app/index.html _tmp
-          git diff --cached --quiet || git commit -m "feat(app): 拼装出完整 index.html（65277 字节），清理 _tmp"
-          git push origin HEAD:main
+          git add personal-site/app/index.html
+          git diff --cached --quiet && echo "内容无变化，跳过提交" || \
+            (git commit -m "build(app): 由 _p2/ 分片拼装 index.html（65277 字节）" && git push origin HEAD:main)
