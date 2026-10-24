@@ -1,0 +1,33 @@
+    return String(reply)
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/^#{1,6}\s*/gm, '')
+      .trim();
+  }
+
+  // v0.5：后端返回的是结构化推荐（recommend），前端把签库切成
+  // 「平台有货」和「纯签库」两池，优先在真实商品里出签。
+  function resolveFood(payload, reply) {
+    const explicitName = payload?.foodName || payload?.recommend?.foodName || payload?.food?.name;
+    const bracketName = reply && reply.match(/【([^】]{1,24})】/)?.[1];
+    const candidate = typeof explicitName === 'string' ? explicitName.trim() : bracketName;
+
+    if (candidate) {
+      const exact = foodDatabase.find(food => food.name === candidate || candidate.includes(food.name));
+      if (exact) return exact;
+      // 平台真实推荐不在本地签库里，合成一支临时签，保证卡片能显示
+      return {
+        name: candidate,
+        emoji: payload?.recommend?.emoji || '🍽️',
+        desc: payload?.recommend?.reason || '食神从附近真实商品里挑的，点下面的按钮直接去平台看。',
+        fortune: payload?.recommend?.fortune || '吉',
+        blessing: payload?.recommend?.blessing || '顺心顺口，刚刚好',
+        ephemeral: true
+      };
+    }
+
+    return foodDatabase.find(food => reply && reply.includes(food.name));
+  }
+
+  async function requestFoodgod() {
+    const ctx = window.ShiqianPrefs ? window.ShiqianPrefs.current() : null;
+    const pane = window.ShiqianPane && window.ShiqianPane.state;
