@@ -1,0 +1,5 @@
+    { name: '提拉米苏', emoji: '🍰', desc: '浓郁咖啡与马斯卡彭的完美融合', fortune: '吉', blessing: '层层递进，回味无穷' },
+    { name: '石锅拌饭', emoji: '🍚', desc: '滋滋作响的石锅，拌匀后锅巴香脆', fortune: '中吉', blessing: '五味调和，圆满如意' },
+    { name: '章鱼小丸子', emoji: '🐙', desc: '外酥内软，木鱼花翩翩起舞', fortune: '小吉', blessing: '小巧精致，乐趣无穷' },
+    { name: '麻婆豆腐', emoji: '🌶️', desc: '川菜 麻辣鲜香嫩烫，豆腐滑嫩入味下饭神器', fortune: '大吉', blessing: '麻辣人生，越嚼越香' },
+    { name: '宫保鸡丁', emoji: '🍗', desc: '川菜 鸡丁脆嫩花生香，酸甜微辣开味菜', fortune: '中吉', blessing: '脆爽利落，快意人生' },
