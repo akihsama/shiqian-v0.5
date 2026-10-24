@@ -366,3 +366,57 @@
     width: 3px;
     height: 15px;
     background: linear-gradient(180deg, var(--red-accent), transparent);
+    border-radius: 0 0 2px 2px;
+  }
+  .rope-tassel::before { left: -6px; transform: rotate(-5deg); }
+  .rope-tassel::after { right: -6px; transform: rotate(5deg); }
+
+  .sticks-in-container {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 3px;
+    z-index: 4;
+  }
+
+  .stick-preview {
+    width: 6px;
+    height: 50px;
+    border-radius: 3px 3px 1px 1px;
+    transform-origin: bottom center;
+  }
+  .stick-preview:nth-child(1) { background: linear-gradient(180deg, #FFECB3, #FFE082); transform: rotate(-8deg); height: 45px; }
+  .stick-preview:nth-child(2) { background: linear-gradient(180deg, #FFECB3, var(--gold)); transform: rotate(-4deg); height: 52px; }
+  .stick-preview:nth-child(3) { background: linear-gradient(180deg, #FFF8E1, #FFE082); transform: rotate(0deg); height: 48px; }
+  .stick-preview:nth-child(4) { background: linear-gradient(180deg, #FFECB3, var(--gold)); transform: rotate(3deg); height: 50px; }
+  .stick-preview:nth-child(5) { background: linear-gradient(180deg, #FFF8E1, #FFE082); transform: rotate(7deg); height: 44px; }
+
+  .container-label {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    writing-mode: vertical-rl;
+    font-family: var(--font-xingkai);
+    font-size: 18px;
+    color: var(--gold);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    letter-spacing: 4px;
+    z-index: 6;
+    white-space: nowrap;
+  }
+
+  /* ===== 抽签按钮 ===== */
+  .draw-btn {
+    position: relative;
+    padding: 14px 48px;
+    font-family: var(--font-xingkai);
+    font-size: 22px;
+    color: white;
+    background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end));
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px var(--glow-color), 0 0 30px rgba(79,195,247,0.2);
