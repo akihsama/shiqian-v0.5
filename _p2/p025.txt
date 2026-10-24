@@ -1,0 +1,44 @@
+  // 响应：{ reply, foodName?, recommend?, sources?[], model, provider, usage }
+  const AGENT_CONFIG = Object.freeze({
+    model: 'glm-4.7-flash',
+    timeoutMs: 40000,
+    fallbackToLocal: true,
+    maxHistoryMessages: 8
+  });
+
+  if (window.ShiqianApi) {
+    window.ShiqianApi.configure({ baseUrl: API_BASE ? API_BASE + '/api' : '/api', mock: USE_MOCK });
+  }
+
+  let conversation = [];
+  let isSending = false;
+  let isDrawing = false;
+  let isStickOpened = false;
+  let history = [];
+
+  // ===== 深浅色主题切换 =====
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  }
+  initTheme();
+
+  function createPetals() {
+    const body = document.body;
+    for (let i = 0; i < 8; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + '%';
