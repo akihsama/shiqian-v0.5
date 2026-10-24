@@ -1,0 +1,60 @@
+      --container-border: rgba(56, 189, 248, 0.2);
+      --item-bg: rgba(51, 65, 85, 0.6);
+      
+      --wood-light: #5D4037;
+      --wood-mid: #4E342E;
+      --wood-dark: #3E2723;
+      --wood-darker: #281815;
+      
+      --gold: #fbbf24;
+      --red-accent: #f87171;
+      --btn-gradient-start: #0ea5e9;
+      --btn-gradient-end: #0284c7;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --glow-color: rgba(14, 165, 233, 0.5);
+      
+      --cloud-opacity: 0.1;
+      --card-bg-start: #451a03;
+      --card-bg-end: #78350f;
+      --card-text: #fef3c7;
+  }
+
+  body {
+    font-family: var(--font-xingkai);
+    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 40%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    color: var(--text-primary);
+    transition: background 0.5s ease;
+  }
+
+  /* ===== 深浅色切换按钮 ===== */
+  /* wallpaper background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+   background-image: url("../assets/img/wallpaper.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px) brightness(0.85);
+    opacity: 0.6;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(0.5px);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
