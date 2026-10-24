@@ -983,6 +983,17 @@
     .sign-container { height: 160px; }
     .container-body { height: 150px; }
   }
+
+  /* 团购卡片样式 ↓ */
+  .deal-section { margin: 14px 0 4px; }
+  .deal-badge { font-size: 12px; color: #e8541e; background: rgba(232,84,30,.1); border-radius: 999px; padding: 2px 10px; }
+  .deal-list { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .deal-card { border: 1px solid rgba(148,163,184,.28); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.72); }
+  .deal-card h4 { margin: 0 0 8px; font-size: 15px; line-height: 1.45; font-weight: 600; }
+  .deal-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #64748b; }
+  .deal-price { font-size: 18px; font-weight: 700; color: #e8541e; }
+  .deal-price s { font-size: 12px; font-weight: 400; color: #94a3b8; margin-left: 6px; }
+  .deal-empty { font-size: 13px; color: #94a3b8; margin: 6px 0 0; }
 </style>
 </head>
 <body>
@@ -1046,8 +1057,18 @@
       <p class="pane-foot">价格与库存以平台实时页面为准；下单与支付在美团 App / 淘宝闪购完成，本站不代收款项。</p>
     </section>
 
-    <div class="llm-section">
-      <div class="section-title-row">
+<!-- 到店团购板块 ↓ -->
+<section class="deal-section" id="dealSection" hidden aria-label="到店团购">
+  <div class="section-title-row">
+    <div class="section-title">🎟️ 到店团购</div>
+    <span class="deal-badge">美团官配</span>
+  </div>
+  <div class="deal-list" id="dealList"></div>
+  <p class="deal-empty" id="dealEmpty" hidden>附近暂时没有匹配的团购套餐，换个口味试试。</p>
+</section>
+
+<div class="llm-section">
+  <div class="section-title-row">
         <div class="section-title">✨ 问问食神</div>
         <span class="agent-badge" id="agentBadge">glm-4.7-flash</span>
       </div>
@@ -1141,6 +1162,60 @@
 <script src="js/normalizer.js"></script>
 <script src="js/location.js"></script>
 <script src="js/client.js"></script>
+<script>
+/* 团购渲染 ↓ */
+(function () {
+  var box = document.getElementById('dealSection');
+  var list = document.getElementById('dealList');
+  var empty = document.getElementById('dealEmpty');
+  if (!box || !list || !window.ShiqianApi) return;
+  function price(v) {
+    var n = Number(v);
+    return isFinite(n) && n > 0 ? n.toFixed(n % 1 ? 2 : 0) : '';
+  }
+  function card(d) {
+    var el = document.createElement('div');
+    el.className = 'deal-card';
+    var h = document.createElement('h4');
+    h.textContent = d.title || d.name || '团购套餐';
+    var meta = document.createElement('div');
+    meta.className = 'deal-meta';
+    var p = document.createElement('span');
+    p.className = 'deal-price';
+    var pv = price(d.price);
+    p.textContent = pv ? '￥' + pv : '查看详情';
+    var ov = price(d.originPrice);
+    if (ov) {
+      var s = document.createElement('s');
+      s.textContent = '￥' + ov;
+      p.appendChild(s);
+    }
+    meta.appendChild(p);
+    var shop = d.shop || d.merchant || d.shopName || '';
+    if (shop) {
+      var sp = document.createElement('span');
+      sp.textContent = shop;
+      meta.appendChild(sp);
+    }
+    el.appendChild(h);
+    el.appendChild(meta);
+    return el;
+  }
+  /* 团购取数 ↓ */
+  window.ShiqianApi.request('/v1/deals', { query: '附近 团购 套餐' }, 12000)
+    .then(function (res) {
+      var raw = (res && res.data && res.data.deals) || (res && res.deals) || [];
+      var deals = Array.isArray(raw) ? raw : [];
+      list.textContent = '';
+      if (!deals.length) { empty.hidden = false; box.hidden = false; return; }
+      deals.slice(0, 6).forEach(function (d) { list.appendChild(card(d)); });
+      box.hidden = false;
+    })
+    .catch(function () {
+      /* 后端不可用时整块不出现，用户无感 */
+    });
+})();
+</script>
 <script src="js/mock.js"></script>
 <script src="js/pane.js"></script>
 
@@ -1197,12 +1272,10 @@
   ];
 
   // ================= 后端 / Agent 配置（v0.5） =================
-  // API_BASE 主地址（Worker），末尾不带斜杠；留空（''）则直接走同源 /api/*。
-  // API_BASE_ALT 备用地址：主地址连不上或返回非 JSON 时按顺序自动改试。
-  // 全部不可达才降级为本地食神 + 本地签库，用户不会看到报错。
-  // 成功过的地址会记在 sessionStorage，同一会话内不再重复试错地址。
+  // 后端上线后（见 backend/README.md），把 Worker 地址填到下面这行，末尾不带斜杠。
+  // 例如：const API_BASE = 'https://shiqian-api.你的子域.workers.dev';
+  // 留空（''）时走同源 /api/*；两者都不可达时自动降级为本地食神 + 本地签库。
   const API_BASE = 'https://shiqian-agent.3314445455.workers.dev';
-  const API_BASE_ALT = [];
 
   // mock = true 时完全不发网络请求，用 app/js/mock.js 的示例数据预览 UI。
   const USE_MOCK = false;
@@ -1218,11 +1291,7 @@
   });
 
   if (window.ShiqianApi) {
-    window.ShiqianApi.configure({
-      baseUrl: API_BASE ? API_BASE + '/api' : '/api',
-      altBaseUrls: API_BASE_ALT.map(function (b) { return b ? b + '/api' : '/api'; }),
-      mock: USE_MOCK
-    });
+    window.ShiqianApi.configure({ baseUrl: API_BASE ? API_BASE + '/api' : '/api', mock: USE_MOCK });
   }
 
   let conversation = [];
@@ -1669,20 +1738,9 @@
 
         renderAgentReply(reply, '本地食神', 'local', '降级模式');
         document.getElementById('agentBadge').textContent = '本地降级';
-
-        // 把失败原因直接写出来，方便自查：地址不通 / 没配 key / 域名白名单 / 限流
-        const hintMap = {
-          NOT_CONFIGURED: '后端没配 ZHIPU_API_KEY，去 Cloudflare 项目 Settings → Variables and Secrets 加一个 Secret。',
-          RATE_LIMITED:   '问得太急了（每分钟 12 次上限），歇一分钟再试。',
-          BUDGET_EXHAUSTED: '今日额度用完了，明天自动恢复。',
-          UPSTREAM_BUSY:  '食神通道排队中（免费额度并发限制），过一会儿会自动恢复。'
-        };
-        const code = error && error.code;
-        const status = error && error.status;
-        document.getElementById('agentHint').textContent = hintMap[code]
-          || (status
-                ? '后端返回 ' + status + '：' + ((error && error.message) || '未知错误')
-                : '后端地址连不上（' + ((error && error.message) || '网络错误') + '），已用本地推荐。');
+        document.getElementById('agentHint').textContent = (error && error.code === 'UPSTREAM_BUSY')
+          ? '食神通道排队中（免费额度并发限制），这次用本地推荐顶上，过一会儿会自动恢复。'
+          : '后端暂不可用，当前使用本地推荐。配置好后会自动切换。';
         conversation.push({ role: 'assistant', content: reply });
 
         if (food) addHistory(food);
