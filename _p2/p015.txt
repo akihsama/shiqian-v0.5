@@ -1,0 +1,47 @@
+    .container-wrapper { height: 240px; }
+    .sign-container { height: 160px; }
+    .container-body { height: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-decoration">
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+</div>
+
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换深浅色" aria-label="切换深浅色">🌙</button>
+
+<div class="app-container">
+  <div class="header">
+    <div class="header-title">今日食签</div>
+    <div class="header-subtitle">~ 今天吃什么？让签文告诉你 ~</div>
+    <div class="header-divider"></div>
+  </div>
+
+  <div class="lottery-section">
+    <div class="container-wrapper">
+      <div class="sign-container" id="signContainer" onclick="startDraw()">
+        <div class="sticks-in-container">
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+          <div class="stick-preview"></div>
+        </div>
+        <div class="container-rim"></div>
+        <div class="container-body">
+          <div class="container-label">食运签</div>
+        </div>
+        <div class="rope-knot">
+          <div class="rope-band"></div>
+          <div class="rope-knot-center"></div>
+          <div class="rope-tassel"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="draw-btn" onclick="startDraw()">🎋 求一支食签</button>
