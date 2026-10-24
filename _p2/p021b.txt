@@ -1,0 +1,5 @@
+    { name: '水煮鱼', emoji: '🐟', desc: '川菜 热油浇开辣椒花椒，鱼肉滑嫩汤红味厚', fortune: '大吉', blessing: '红油翻滚，热情似火' },
+    { name: '回锅肉', emoji: '🥩', desc: '川菜 酱香回锅微焦边，蒜苗同炒老川菜', fortune: '吉', blessing: '有来有往，圆融得体' },
+    { name: '鱼香肉丝', emoji: '🥢', desc: '川菜 酸甜咸鲜微辣，家常经典百吃不腻', fortune: '中吉', blessing: '五味俱全，调和人生' },
+    { name: '口水鸡', emoji: '🐔', desc: '川菜 红油辣汁浇嫩鸡，麻辣鲜香令人直流口水', fortune: '吉', blessing: '垂涎欲滴，口福不浅' },
+    { name: '九转大肠', emoji: '🍥', desc: '鲁菜 酸辣甜咸五味陈，刀工火候功夫菜', fortune: '大吉', blessing: '九转回肠，终成正果' },
