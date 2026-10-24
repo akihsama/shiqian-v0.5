@@ -34,4 +34,4 @@
         <div class="card-food">
           <div class="card-food-emoji" id="cardEmoji">🍣</div>
           <div class="card-food-name" id="cardFoodName">寿司拼盘</div>
-          <div class="card-food-desc" id="cardFoodDesc">新鲜的鱼肉搭配醇饭，口感丰富，今日宜品尝日式料理</div>
+          <div class="card-food-desc" id="cardFoodDesc">新鲜的鱼肉搭配醋饭，口感丰富，今日宜品尝日式料理</div>
