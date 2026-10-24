@@ -1,1 +1,7 @@
-{"items":[{"find":"    window.ShiqianApi.configure({ baseUrl: API_BASE ? API_BASE + '/api' : '/api', mock: USE_MOCK });","replace":"    window.ShiqianApi.configure({\n      baseUrl: API_BASE ? API_BASE + '/api' : '/api',\n      altBaseUrls: API_BASE_ALT.map(function (b) { return b ? b + '/api' : '/api'; }),\n      mock: USE_MOCK\n    });"}]}
+[
+  {
+    "find": "    .container-body { height: 150px; }\n  }\n</style>",
+    "replace": "    .container-body { height: 150px; }\n  }\n\n  /* 团购卡片样式 ↓ */\n  .deal-section { margin: 14px 0 4px; }\n  .deal-badge { font-size: 12px; color: #e8541e; background: rgba(232,84,30,.1); border-radius: 999px; padding: 2px 10px; }\n  .deal-list { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }\n  .deal-card { border: 1px solid rgba(148,163,184,.28); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.72); }\n  .deal-card h4 { margin: 0 0 8px; font-size: 15px; line-height: 1.45; font-weight: 600; }\n  .deal-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #64748b; }\n  .deal-price { font-size: 18px; font-weight: 700; color: #e8541e; }\n  .deal-price s { font-size: 12px; font-weight: 400; color: #94a3b8; margin-left: 6px; }\n  .deal-empty { font-size: 13px; color: #94a3b8; margin: 6px 0 0; }\n</style>",
+    "probe": "/* 团购卡片样式 ↓ */"
+  }
+]
