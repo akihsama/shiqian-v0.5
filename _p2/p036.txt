@@ -1,0 +1,35 @@
+      conversation.push({ role: 'assistant', content: reply });
+
+      if (food) {
+        addHistory(food);
+        // 把 AI 选的那道菜作为关键词，刷新下方平台面板
+        if (window.ShiqianPane) window.ShiqianPane.searchByFood(food.name);
+      }
+    } catch (error) {
+      console.warn('食神后端调用失败：', error);
+
+      if (!AGENT_CONFIG.fallbackToLocal) {
+        renderAgentReply('暂时无法连接食神，请稍后重试。', '连接失败', 'local');
+      } else {
+        const reply = generateRecommendation(text);
+        const food = resolveFood(null, reply);
+
+        renderAgentReply(reply, '本地食神', 'local', '降级模式');
+        document.getElementById('agentBadge').textContent = '本地降级';
+        document.getElementById('agentHint').textContent = (error && error.code === 'UPSTREAM_BUSY')
+          ? '食神通道排队中（免费额度并发限制），这次用本地推荐顶上，过一会儿会自动恢复。'
+          : '后端暂不可用，当前使用本地推荐。配置好后会自动切换。';
+        conversation.push({ role: 'assistant', content: reply });
+
+        if (food) addHistory(food);
+      }
+    } finally {
+      isSending = false;
+      setAgentLoading(false);
+    }
+  }
+
+  function generateRecommendation(input) {
+    const lower = input.toLowerCase();
+    const wantsSpicy = /(辣|麻辣|刺激)/.test(lower) && !/(不辣|忌辣|免辣|怕辣|微辣)/.test(lower);
+    const preferredNames = new Set();
