@@ -1,0 +1,48 @@
+      const cp = document.getElementById('cardPlatform');
+      if (cp) { cp.hidden = true; cp.innerHTML = ''; }
+      document.getElementById('glowEffect').classList.remove('active');
+      document.getElementById('closeHint').classList.remove('show');
+      isStickOpened = false;
+    }, 500);
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.isComposing) {
+      event.preventDefault();
+      sendLLM();
+    }
+  }
+
+  function setAgentLoading(isLoading) {
+    const input = document.getElementById('llmInput');
+    const sendButton = document.getElementById('llmSendBtn');
+    const thinking = document.getElementById('llmThinking');
+    const result = document.getElementById('llmResult');
+
+    input.disabled = isLoading;
+    sendButton.disabled = isLoading;
+    sendButton.textContent = isLoading ? '思考中' : '发送';
+    thinking.classList.toggle('show', isLoading);
+
+    if (isLoading) {
+      result.classList.remove('show');
+    } else {
+      input.focus({ preventScroll: true });
+    }
+  }
+
+  function extractAgentReply(payload) {
+    if (typeof payload === 'string') return payload.trim();
+
+    const candidates = [
+      payload?.reply,
+      payload?.content,
+      typeof payload?.message === 'string' ? payload.message : payload?.message?.content,
+      payload?.choices?.[0]?.message?.content
+    ];
+
+    const reply = candidates.find(value => typeof value === 'string' && value.trim());
+    return reply ? reply.trim() : '';
+  }
+
+  function normalizeReply(reply) {
